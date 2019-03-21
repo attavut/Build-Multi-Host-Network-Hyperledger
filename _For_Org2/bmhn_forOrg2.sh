@@ -190,4 +190,4 @@ askProceed
 
 # generate crypto-material
 generateCerts
-generateChannelArtifacts
+#generateChannelArtifacts
