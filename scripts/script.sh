@@ -141,7 +141,7 @@ joinWithRetry() {
 
 joinChannel () {
 	for org in 1 2; do
-	    for peer in 0 1; do
+	    for peer in 0; do
 		joinWithRetry $peer $org
 		echo "===================== peer${peer}.org${org} joined channel '$CHANNEL_NAME' ===================== "
 		sleep $DELAY
@@ -156,7 +156,8 @@ installChaincode() {
   setGlobals $PEER $ORG
   VERSION=${3:-1.0}
   set -x
-  peer chaincode install -n mycc -v ${VERSION} -l ${LANGUAGE} -p ${CC_SRC_PATH} >&log.txt
+  #peer chaincode install -n mycc -v ${VERSION} -l ${LANGUAGE} -p ${CC_SRC_PATH} >&log.txt
+  peer chaincode install -n mycc -v 1.0 -p github.com/hyperledger/fabric/examples/chaincode/go/chaincode_example02 >&log.txt
   res=$?
   set +x
   cat log.txt
@@ -267,14 +268,14 @@ joinChannel
 ## Set the anchor peers for each org in the channel
 echo "Updating anchor peers for org1..."
 updateAnchorPeers 0 1
-# echo "Updating anchor peers for org2..."
-# updateAnchorPeers 0 2
+echo "Updating anchor peers for org2..."
+updateAnchorPeers 0 2
 
 ## Install chaincode on peer0.org1 and peer0.org2
 echo "Installing chaincode on peer0.org1..."
 installChaincode 0 1
-# echo "Install chaincode on peer0.org2..."
-# installChaincode 0 2
+echo "Install chaincode on peer0.org2..."
+installChaincode 0 2
 
 # # Instantiate chaincode on peer0.org2
 # echo "Instantiating chaincode on peer0.org2..."
